@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:task="http://www.springframework.org/schema/task" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:ws="http://jax-ws.dev.java.net/spring/core" xmlns:wss="http://jax-ws.dev.java.net/spring/servlet"
+	xmlns:oxm="http://www.springframework.org/schema/oxm"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+                           http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+                           http://www.springframework.org/schema/context
+                           http://www.springframework.org/schema/context/spring-context-3.1.xsd
+                           http://www.springframework.org/schema/task
+                           http://www.springframework.org/schema/task/spring-task-3.1.xsd
+                           http://www.springframework.org/schema/aop  
+                           http://www.springframework.org/schema/aop/spring-aop-3.1.xsd  
+                           http://www.springframework.org/schema/context  
+                           http://www.springframework.org/schema/context/spring-context-3.1.xsd
+                           http://www.springframework.org/schema/jee
+                           http://www.springframework.org/schema/jee/spring-jee-3.1.xsd
+                           http://www.springframework.org/schema/util
+                           http://www.springframework.org/schema/util/spring-util-3.1.xsd
+                           http://jax-ws.dev.java.net/spring/core
+                           http://jax-ws.dev.java.net/spring/core.xsd
+                           http://jax-ws.dev.java.net/spring/servlet
+                           http://jax-ws.dev.java.net/spring/servlet.xsd">
+
+	<util:map id="jaxwsRegistroAuditoriaService">
+		<entry key="com.sun.xml.internal.ws.request.timeout">
+			<value type="java.lang.Integer">${ws.registro.auditoria.max.request.timeout}
+			</value>
+		</entry>
+		<entry key="com.sun.xml.internal.ws.connect.timeout">
+			<value type="java.lang.Integer">${ws.registro.auditoria.max.connection.timeout}
+			</value>
+		</entry>
+	</util:map>
+	<bean id="RegistroAuditoriaService" class="org.springframework.remoting.jaxws.JaxWsPortProxyFactoryBean">
+		<property name="wsdlDocumentUrl" value="${ws.registro.auditoria.enpointAddress}"/>
+		<property name="namespaceUri" value="http://service.eai.auditoria.claro.com.pe/RegistroAuditoriaWS" /><!-- targetNamespace wsdl -->
+		<property name="serviceName" value="RegistroAuditoriaService" /> <!-- service name wsdl -->
+		<property name="portName" value="RegistroAuditoriaPortSB11" /> <!-- port name wsdl -->
+		<property name="serviceInterface" value="pe.com.claro.auditoria.eai.service.registroauditoriaws.RegistroAuditoriaPortType" />
+		<property name="lookupServiceOnStartup" value="false" />
+		<property name="customProperties" >
+			<ref local="jaxwsRegistroAuditoriaService" />   
+		</property>
+	</bean>
+
+</beans>
